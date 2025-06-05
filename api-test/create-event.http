@@ -1,0 +1,44 @@
+POST http://localhost:8080/events
+Content-Type: application/json
+{
+    "name": "GoLang Conference 2025",
+    "description": "Join developers from around the world at the annual GoLang Conference. Learn about the latest features, best practices, and real-world applications of Go.",
+    "location": "Moscone Center, 747 Howard St, San Francisco, CA 94103",
+    "date_time": "2025-06-15T09:00:00Z"
+}
+
+###
+
+POST http://localhost:8080/events
+Content-Type: application/json
+
+{
+    "name": "AI & ML Summit 2025",
+    "description": "Explore the future of artificial intelligence and machine learning with industry leaders and researchers.",
+    "location": "Tech Park, 123 Innovation Dr, Austin, TX 78701",
+    "date_time": "2025-07-20T10:00:00Z"
+}
+
+###
+
+POST http://localhost:8080/events
+Content-Type: application/json
+
+{
+    "name": "Cloud Computing Expo",
+    "description": "A gathering for cloud professionals to discuss the latest trends in cloud infrastructure and services.",
+    "location": "Expo Center, 456 Cloud Ave, Seattle, WA 98101",
+    "date_time": "2025-08-10T09:30:00Z"
+}
+
+###
+
+POST http://localhost:8080/events
+Content-Type: application/json
+
+{
+    "name": "Cybersecurity Workshop",
+    "description": "Hands-on workshop focusing on modern cybersecurity threats and defense strategies.",
+    "location": "Security Hub, 789 Safe St, New York, NY 10001",
+    "date_time": "2025-09-05T13:00:00Z"
+}
