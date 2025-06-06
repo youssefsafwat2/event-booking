@@ -9,7 +9,7 @@ type User struct {
 	ID       int64  `json:"id"`
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required,min=6"`
-	Name     string `json:"name" binding:"required"`
+	Name     string `json:"name"`
 }
 
 func (u *User) Save() error {
@@ -63,4 +63,30 @@ func GetUsers() ([]User, error) {
 
 	}
 	return users, nil
+}
+func GetUserByEmail(email string) (*User, error) {
+	query := `
+	SELECT id, email, password, name
+	FROM users
+	WHERE email = ?;
+	`
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	row := stmt.QueryRow(email)
+	var user User
+	err = row.Scan(&user.ID, &user.Email, &user.Password, &user.Name)
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
+func CheckPasswordHash(password, hash string) bool {
+	err := utils.ComparePasswordAndHash(password, hash)
+
+	return err
 }

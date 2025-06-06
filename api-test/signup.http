@@ -37,3 +37,14 @@ Content-Type: application/json
     "name": "Henry"
 }
 ###
+
+
+POST http://localhost:8080/signup
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "test123",
+    "name": "test"
+}
+###
