@@ -1,0 +1,39 @@
+POST http://localhost:8080/signup
+Content-Type: application/json
+
+{
+    "email": "eve@example.com",
+    "password": "eve123",
+    "name": "Eve"
+}
+###
+
+POST http://localhost:8080/signup
+Content-Type: application/json
+
+{
+    "email": "frank@example.com",
+    "password": "frank123",
+    "name": "Frank"
+}
+###
+
+POST http://localhost:8080/signup
+Content-Type: application/json
+
+{
+    "email": "grace@example.com",
+    "password": "grace123",
+    "name": "Grace"
+}
+###
+
+POST http://localhost:8080/signup
+Content-Type: application/json
+
+{
+    "email": "henry@example.com",
+    "password": "henry123",
+    "name": "Henry"
+}
+###

@@ -1,6 +1,7 @@
 package models
 
 import (
+	"database/sql"
 	"time"
 
 	"github.com/youssefsafwat2/event-booking/db"
@@ -15,8 +16,6 @@ type Event struct {
 	UserID      int       `json:"user_id"`
 	CreatedAt   time.Time `json:"created_at"`
 }
-
-// var events = []Event{}
 
 func (e *Event) Save() error {
 	query := `
@@ -63,4 +62,60 @@ func GetEvents() ([]Event, error) {
 	}
 
 	return events, nil
+}
+
+func GetEventByID(id int64) (*Event, error) {
+	query := `
+	SELECT id, name, description, location, date_time, user_id, created_at
+	FROM events
+	WHERE ID = ?;
+	`
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		return nil, err
+	}
+
+	defer stmt.Close()
+	var event Event
+	err = stmt.QueryRow(id).Scan(&event.ID, &event.Name, &event.Description, &event.Location, &event.DateTime, &event.UserID, &event.CreatedAt)
+	if err == sql.ErrNoRows {
+		return nil, nil // No event found with the given ID
+	} else if err != nil {
+		return nil, err
+	}
+
+	return &event, nil
+
+}
+
+func (e *Event) UpdateEvent() error {
+	query := `
+	UPDATE events
+	SET name = ?, description = ?, location = ?, date_time = ?
+	WHERE id = ?;
+	`
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+	_, err = stmt.Exec(e.Name, e.Description, e.Location, e.DateTime, e.ID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (e Event) Delete() error {
+	query := "DELETE FROM events WHERE id = ?"
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		return err
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.Exec(e.ID)
+	return err
 }

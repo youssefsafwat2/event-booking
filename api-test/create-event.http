@@ -42,3 +42,15 @@ Content-Type: application/json
     "location": "Security Hub, 789 Safe St, New York, NY 10001",
     "date_time": "2025-09-05T13:00:00Z"
 }
+
+###
+POST http://localhost:8080/events
+Content-Type: application/json
+
+{
+    "name": "Blockchain and Cryptocurrency Conference",
+    "description": "Dive into the world of blockchain technology and cryptocurrency with experts from the field.",
+    "location": "Blockchain Center, 321 Crypto Blvd, San Francisco, CA 94107",
+    "date_time": "2025-10-15T11:00:00Z",
+    "user_id": 1
+}
