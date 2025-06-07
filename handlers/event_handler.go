@@ -6,39 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/youssefsafwat2/event-booking/models"
-	"github.com/youssefsafwat2/event-booking/utils"
 )
-
-func authenticate(context *gin.Context) (*models.User, bool) {
-	token := context.GetHeader("Authorization")
-	if token == "" {
-		context.JSON(http.StatusUnauthorized, gin.H{
-			"message": "Unauthorized, please login",
-			"status":  "error",
-		})
-		return nil, false
-	}
-
-	rawUser, exists := context.Get("user")
-	if !exists {
-		context.JSON(http.StatusUnauthorized, gin.H{
-			"message": "Unauthorized, log in and try again",
-			"status":  "error",
-		})
-		return nil, false
-	}
-
-	user := rawUser.(models.User)
-	if _, err := utils.ValidateToken(token, user.Email, user.ID); err != nil {
-		context.JSON(http.StatusUnauthorized, gin.H{
-			"message": "Unauthorized, log in and try again",
-			"status":  "error",
-		})
-		return nil, false
-	}
-
-	return &user, true
-}
 
 func GetEvents(context *gin.Context) {
 	events, err := models.GetEvents()
@@ -57,10 +25,8 @@ func GetEvents(context *gin.Context) {
 }
 
 func CreateEvent(context *gin.Context) {
-	user, ok := authenticate(context)
-	if !ok {
-		return
-	}
+
+	userID := context.GetInt64("userID")
 
 	var event models.Event
 	if err := context.ShouldBindJSON(&event); err != nil {
@@ -71,7 +37,7 @@ func CreateEvent(context *gin.Context) {
 		return
 	}
 
-	if err := event.Save(user.ID); err != nil {
+	if err := event.Save(userID); err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Could not create event, try again later",
 			"status":  "error",
@@ -121,10 +87,7 @@ func GetEvent(context *gin.Context) {
 }
 
 func UpdateEvent(context *gin.Context) {
-	user, ok := authenticate(context)
-	if !ok {
-		return
-	}
+	userID := context.GetInt64("userID")
 
 	id, err := strconv.ParseInt(context.Param("id"), 10, 64)
 	if err != nil {
@@ -150,7 +113,7 @@ func UpdateEvent(context *gin.Context) {
 		})
 		return
 	}
-	if event.UserID != user.ID {
+	if event.UserID != userID {
 		context.JSON(http.StatusUnauthorized, gin.H{
 			"message": "Unauthorized access",
 			"status":  "error",
@@ -183,10 +146,7 @@ func UpdateEvent(context *gin.Context) {
 }
 
 func DeleteEvent(context *gin.Context) {
-	user, ok := authenticate(context)
-	if !ok {
-		return
-	}
+	userID := context.GetInt64("userID")
 
 	id, err := strconv.ParseInt(context.Param("id"), 10, 64)
 	if err != nil {
@@ -212,7 +172,7 @@ func DeleteEvent(context *gin.Context) {
 		})
 		return
 	}
-	if event.UserID != user.ID {
+	if event.UserID != userID {
 		context.JSON(http.StatusUnauthorized, gin.H{
 			"message": "Unauthorized access",
 			"status":  "error",

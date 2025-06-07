@@ -11,6 +11,7 @@ Content-Type: application/json
 
 POST http://localhost:8080/events
 Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZyYW5rQGV4YW1wbGUuY29tIiwiZXhwIjoxNzQ5MzQwNjI5LCJ1c2VyX2lkIjoxfQ.ZKLKTSsXvraOeBXUoWdq1yebpGa9oO9jo6w8NC3zfQs
 
 {
     "name": "AI & ML Summit 2025",
@@ -23,6 +24,7 @@ Content-Type: application/json
 
 POST http://localhost:8080/events
 Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZyYW5rQGV4YW1wbGUuY29tIiwiZXhwIjoxNzQ5MzQwNjI5LCJ1c2VyX2lkIjoxfQ.ZKLKTSsXvraOeBXUoWdq1yebpGa9oO9jo6w8NC3zfQs
 
 {
     "name": "Cloud Computing Expo",
@@ -35,6 +37,7 @@ Content-Type: application/json
 
 POST http://localhost:8080/events
 Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlbnJ5QGV4YW1wbGUuY29tIiwiZXhwIjoxNzQ5MzQyNzI1LCJ1c2VyX2lkIjoyfQ.SCY6jskKUwJZdRw81nXtFwkQFnIadfNKtrms6K-LY2E
 
 {
     "name": "Cybersecurity Workshop",

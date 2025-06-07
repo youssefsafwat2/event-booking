@@ -16,9 +16,8 @@ func GenerateToken(email string, userID int64) (string, error) {
 	})
 	return token.SignedString([]byte(secretKey))
 }
-
-func ValidateToken(token string, expectedEmail string, expectedUserID int64) (*jwt.Token, error) {
-	parsedToken, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
+func ValidateToken(token string) (int64, error) {
+	parsedToken, err := jwt.Parse(token, func(token *jwt.Token) (any, error) {
 		_, ok := token.Method.(*jwt.SigningMethodHMAC)
 		if !ok {
 			return nil, jwt.ErrSignatureInvalid
@@ -27,34 +26,27 @@ func ValidateToken(token string, expectedEmail string, expectedUserID int64) (*j
 	})
 
 	if err != nil {
-		return nil, err
+		return 0, err
 	}
 	if !parsedToken.Valid {
-		return nil, jwt.ErrTokenInvalidId
+		return 0, jwt.ErrTokenInvalidId
 	}
 
 	claims, ok := parsedToken.Claims.(jwt.MapClaims)
 	if !ok {
-		return nil, jwt.ErrTokenInvalidClaims
+		return 0, jwt.ErrTokenInvalidClaims
 	}
 
-	// Validate email
-	email, ok := claims["email"].(string)
-	if !ok || email != expectedEmail {
-		return nil, jwt.ErrTokenInvalidClaims
-	}
-
-	// Validate user_id
-	userID, ok := claims["user_id"].(float64) // jwt.MapClaims uses float64 for numbers
-	if !ok || int64(userID) != expectedUserID {
-		return nil, jwt.ErrTokenInvalidClaims
-	}
-
-	// Check if the token has expired
+	// Check expiration
 	exp, ok := claims["exp"].(float64)
 	if !ok || time.Unix(int64(exp), 0).Before(time.Now()) {
-		return nil, jwt.ErrTokenExpired
+		return 0, jwt.ErrTokenExpired
 	}
 
-	return parsedToken, nil
+	userID, ok := claims["user_id"].(float64)
+	if !ok {
+		return 0, jwt.ErrTokenInvalidClaims
+	}
+
+	return int64(userID), nil
 }
